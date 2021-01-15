@@ -38,7 +38,7 @@ jobs:
       - name: VUnit Action
         # You may pin to the exact commit or the version.
         # uses: VUnit/vunit_action@c32d66d8b731ae54fba8b50f1a80cff3c647b9bb
-        uses: VUnit/vunit_action@v0.1.0
+        uses: VUnit/vunit_action@master
         with:
           # python VUnit run file
           run_file: example/run.py
