@@ -4,10 +4,24 @@
 !.gitignore
 !*.md
 # Folders
-!*.hardware
-!*.hardware/*
-!*.hardware/**/
-!*.hardware/**/*
+!*hardware
+!*hardware/*
+!*hardware/**/
+!*hardware/**/*
+
+
+!*software
+!*software/*
+!*software/**/
+!*software/**/*
+
+!*example
+!*example/*
+!*example/**/
+!*example/**/*
+
+#ignore vunit output
+*vunit_out
 # Source files:
 !*.vhd
 !*.v
