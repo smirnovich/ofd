@@ -41,4 +41,4 @@ jobs:
         uses: VUnit/vunit_action@v0.1.0
         with:
           # python VUnit run file
-          run_file: run.py
+          run_file: ../../example/run.py
