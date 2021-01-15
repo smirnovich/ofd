@@ -1,0 +1,24 @@
+*
+# !*/
+
+!.gitignore
+!*.md
+# Folders
+!*.hardware
+!*.hardware/*
+!*.hardware/**/
+!*.hardware/**/*
+# Source files:
+!*.vhd
+!*.v
+!*.sv
+!*.py
+# Constraint files
+!*.xdc
+
+# TCL - files
+!*.tcl
+
+# Documents
+!*.pdf
+!*.jpg
