@@ -45,7 +45,7 @@ jobs:
           
       - name: main_handler
         run: |
-          verilator -Wall -cc hardware/core/main_handler.sv
+          verilator -Wno-fatal -Wall -cc hardware/core/main_handler.sv
           
       - name: uart
         run: |
