@@ -1,5 +1,9 @@
 `timescale 1ns / 1ps
 // TOP level file
+`include "/../hardware/buffer/srcs/basic_fifo.sv"
+`include "/../hardware/core/main_handler.sv"
+`include "/../hardware/interfaces/uart/srcs/uart.sv"
+
 
 module top_ofd_uart(
     input logic clk,
