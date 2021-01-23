@@ -5,6 +5,7 @@ module top_ofd_uart(
     input logic clk,
     input logic reset,
     input [7:0] data_in,
+    output [7:0] data_out,
     output logic tx,
     input rx,
     input trig_start
@@ -13,10 +14,12 @@ module top_ofd_uart(
 localparam N_BITS = $bits(data_in);
 
 wire [7:0] to_uart;
+//wire [7:0] from_uart;
 wire [N_BITS-1:0] data_to_handler;
 wire tx_ready;
 wire tx_run;
 wire read_fifo;
+wire is_fifo_empty;
 
 basic_fifo #(.N_BIT(N_BITS)) fifo(
     .clk(clk),
@@ -26,7 +29,7 @@ basic_fifo #(.N_BIT(N_BITS)) fifo(
     .data_in(data_in),
     .data_out(data_to_handler),
     .overflowed(),
-    .is_empty()
+    .is_empty(is_fifo_empty)
 );
 
 uart #(.BAUDRATE(115200), .CLK_PERIOD(100000000)) uart(
@@ -34,8 +37,8 @@ uart #(.BAUDRATE(115200), .CLK_PERIOD(100000000)) uart(
     .reset(reset),
     .rx(rx),
     .tx(tx),
-    .data_in(to_uart),
-    .data_out(),
+    .data_tx(to_uart),
+    .data_rx(data_out),
     .run(tx_run),
     .tx_ready(tx_ready),
     .rx_ready()
@@ -50,7 +53,8 @@ main_handler #(.N_BIT(N_BITS)) handl(
     .data_aq(data_to_handler),
     .data_out(to_uart),
     .data_ready(tx_run),
-    .req_data(read_fifo)
+    .req_data(read_fifo),
+    .is_fifo_empty(is_fifo_empty)
     );
 
     

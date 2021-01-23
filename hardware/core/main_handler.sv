@@ -10,15 +10,16 @@ module main_handler #(
     input logic [N_BIT-1:0] data_aq,
     output logic [7:0] data_out,
     output logic data_ready,
-    output logic req_data
+    output logic req_data,
+    input is_fifo_empty
     );
 
-typedef enum {st_idle,st_send} aq_fsm_type;
+typedef enum {st_idle,st_fifo_req,st_send} aq_fsm_type;
 aq_fsm_type aq_fsm;
 
 localparam BYTECOUNTER = (N_BIT/8) + 1*((N_BIT%8)>0);
 integer bytecount;
-logic [N_BIT-1:0] data_mem;
+logic [N_BIT-1:0] data_mem = 0;
 integer i;
 always_ff@(posedge(clk),posedge(reset)) begin
     
@@ -28,18 +29,25 @@ always_ff@(posedge(clk),posedge(reset)) begin
         bytecount <= 0;
         data_mem <= 0;
         req_data <= 0;
+        data_out <= 0;
     end
     else begin
         case(aq_fsm)
             st_idle: begin
                 data_ready <= 1'b0;
-                if (trig_start == 1'b1)
-                    aq_fsm <= st_send;
+                if (trig_start == 1'b1) begin
+                    aq_fsm <= st_fifo_req;
                     req_data <= 1;
+                end
+            end
+            st_fifo_req: begin
+                if (!(is_fifo_empty)) begin
+                    data_mem <= data_aq;
+                    aq_fsm <= st_send;
+                    req_data <= 0;
+                end
             end
             st_send: begin
-                req_data <= 0;
-                data_mem <= data_aq;
                 if (uart_ready) begin
                     data_ready <= 1'b1;
                     if (bytecount == (BYTECOUNTER - 1)) begin
