@@ -36,3 +36,5 @@
 # Documents
 !*.pdf
 !*.jpg
+!docs/
+!docs/*.md
